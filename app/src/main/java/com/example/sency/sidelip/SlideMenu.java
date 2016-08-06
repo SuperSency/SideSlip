@@ -12,6 +12,8 @@ import android.view.WindowManager;
 import android.widget.HorizontalScrollView;
 import android.widget.LinearLayout;
 
+import com.nineoldandroids.view.ViewHelper;
+
 /**
  * Created by sency on 2016/8/6.
  */
@@ -102,6 +104,7 @@ public class SlideMenu extends HorizontalScrollView {
                 Log.i("tag","mMenuWidth / 2:"+mMenuWidth / 2);
                 //如果隐藏的宽度大于菜单的二分之一,即显示小于隐藏,则让他滑动隐藏
                 if (scrollX >= mMenuWidth / 2) {
+                    //向左偏移X,即开始隐藏
                     this.smoothScrollTo(mMenuWidth, 0);
                     isOpen = false;
                 } else {
@@ -182,4 +185,22 @@ public class SlideMenu extends HorizontalScrollView {
         }
     }
 
+    /**
+     * 抽屉式
+     * @param l
+     * @param t
+     * @param oldl
+     * @param oldt
+     */
+    //滚动发生时
+    @Override
+    protected void onScrollChanged(int l, int t, int oldl, int oldt) {
+        super.onScrollChanged(l, t, oldl, oldt);
+        float scale = l*1.0f/mMenuWidth;//1~0
+        //调用属性动画
+        /**
+         * 从隐藏到全部显示应该是偏移量从mMenuWidth到0的过程
+         */
+        ViewHelper.setTranslationX(mMenu,mMenuWidth*scale);
+    }
 }
